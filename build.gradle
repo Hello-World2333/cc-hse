@@ -1,0 +1,61 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version "${modDevGradleVersion}"
+}
+
+group = 'com.example'
+version = "${modVersion}"
+
+base {
+    archivesName = 'cc-hse'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    maven {
+        name = 'SquidDev'
+        url = uri('https://maven.squiddev.cc')
+    }
+}
+
+dependencies {
+    // CC: Tweaked API for compilation. Note: for MC 1.21.x the "-forge" artefact is the NeoForge build.
+    compileOnlyApi "cc.tweaked:cc-tweaked-${minecraftVersion}-forge-api:${cctVersion}"
+    // Full mod at runtime so it can be used in the dev environment.
+    runtimeOnly "cc.tweaked:cc-tweaked-${minecraftVersion}-forge:${cctVersion}"
+}
+
+neoForge {
+    version = "${neoForgeVersion}"
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+        }
+    }
+
+    mods {
+        "${modId}" {
+            sourceSet(sourceSets.main)
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.processResources {
+    inputs.property 'modVersion', project.version
+    filesMatching('META-INF/neoforge.mods.toml') {
+        expand 'modVersion': project.version
+    }
+}

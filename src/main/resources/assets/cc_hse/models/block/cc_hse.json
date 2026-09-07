@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "cc_hse:block/cc_hse",
+    "top": "cc_hse:block/cc_hse_top",
+    "bottom": "cc_hse:block/cc_hse_top"
+  }
+}

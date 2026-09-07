@@ -1,0 +1,34 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "MIT"
+
+[[mods]]
+modId = "cc_hse"
+version = "${modVersion}"
+displayName = "CC: HSE"
+description = '''
+A high-frequency hardware abstraction layer for CC: Tweaked. Provides the
+cc_hse block, which sends hse_tick events to attached computers at a
+configurable frequency (higher than the vanilla 20 Hz tick rate).
+'''
+
+[[dependencies.cc_hse]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.9,21.2)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.cc_hse]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1]"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.cc_hse]]
+modId = "computercraft"
+type = "required"
+versionRange = "[1.120.0,)"
+ordering = "AFTER"
+side = "BOTH"
