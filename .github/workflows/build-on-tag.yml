@@ -1,0 +1,56 @@
+name: Build on version tag
+
+# Trigger the build whenever a versioned tag is pushed.
+# Convention: tags look like "v1.2.3" (an optional leading "v" is stripped).
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build and release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Extract version from tag
+        id: tag
+        shell: bash
+        run: |
+          # GITHUB_REF_NAME is the tag name, e.g. "v1.2.3".  Strip a leading "v".
+          echo "tag=$GITHUB_REF_NAME"
+          echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Build with Gradle
+        run: |
+          # -PmodVersion overrides the version, so the jar and the compiled
+          # neoforge.mods.toml both carry the tagged version.
+          ./gradlew build -PmodVersion=${{ steps.tag.outputs.version }}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cc-hse-${{ steps.tag.outputs.version }}
+          path: build/libs/
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ steps.tag.outputs.version }}
+          generate_release_notes: true
+          files: build/libs/cc-hse-*.jar
