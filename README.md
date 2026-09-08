@@ -112,4 +112,4 @@ docs/api.zh_cn.md                 中文 API 文档
 
 ## 许可证
 
-请参阅仓库根目录下的 [LICENSE](LICENSE) 文件。
+本项目以 **GPL-3.0-only** 授权，完整条款见仓库根目录下的 [LICENSE](LICENSE)。
