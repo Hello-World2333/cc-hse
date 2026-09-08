@@ -9,7 +9,8 @@ displayName = "CC: HSE"
 description = '''
 A high-frequency hardware abstraction layer for CC: Tweaked. Provides the
 cc_hse block, which sends hse_tick events to attached computers at a
-configurable frequency (higher than the vanilla 20 Hz tick rate).
+configurable frequency (higher than the vanilla 20 Hz tick rate), together
+with a queue-free waitNextTick() method for waiting on the next tick.
 '''
 
 [[dependencies.cc_hse]]
